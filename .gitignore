@@ -1,0 +1,76 @@
+# ===========================
+#  Arquivos PHP / Backend
+# ===========================
+vendor/
+composer.lock
+*.log
+app.log
+
+# ===========================
+#  Docker
+# ===========================
+# Caixa de armazenamento local do MySQL
+db_data/
+data/
+mysql-data/
+*.pid
+
+# Imagens, containers, cache
+docker-compose.override.yml
+.docker/
+.tmp/
+
+# ===========================
+#  Cache do Apache / PHP
+# ===========================
+*.cache
+*.tmp
+*.swp
+
+# ===========================
+#  IDEs / Editores
+# ===========================
+
+# VS Code
+.vscode/
+.history/
+
+# IntelliJ / PHPStorm / STS
+.idea/
+*.iml
+/out/
+
+# ===========================
+#  Sistema Operacional
+# ===========================
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ===========================
+#  Logs e arquivos gerados
+# ===========================
+*.log
+logs/
+*.tar
+*.zip
+
+# ===========================
+#  Banco de Dados
+# ===========================
+*.sql
+*.dump
+
+# ===========================
+#  Node (caso use futuramente)
+# ===========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store/
