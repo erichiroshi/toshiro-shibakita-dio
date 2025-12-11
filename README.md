@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Composer-2.x-885630?style=for-the-badge&logo=composer&logoColor=white" />
   <img src="https://img.shields.io/badge/FakerPHP-1.x-FF6F00?style=for-the-badge&logo=php&logoColor=white" />
   <img src="https://img.shields.io/badge/Apache-2.4-D22128?style=for-the-badge&logo=apache&logoColor=white" />
-  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+  <img src="https://img.shields.io/badge/MySQL-latest-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
   <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/Nginx-LoadBalancer-009639?style=for-the-badge&logo=nginx&logoColor=white" />
 </p>
@@ -56,6 +56,7 @@ O fork recebeu uma série de melhorias técnicas para torná-lo mais moderno e p
   - `nginx` (servidor web)
   - `mysql` (banco de dados)
 - Volumes organizados e mapeamentos seguros.
+- Suporte a múltiplas instâncias do serviço PHP (`app`) com load balancing via Nginx.
 
 ### 2.2 Estrutura de pastas reorganizada
 - `app/` isolado contendo toda a aplicação PHP.
@@ -97,25 +98,24 @@ O fork recebeu uma série de melhorias técnicas para torná-lo mais moderno e p
 ## 3. Arquitetura
 
 ```
-├── app/
+├── app/                # Código PHP da aplicação
 │ ├── index.php
-│ ├── relatorios/
+│ ├──  Dockerfile
+│ ├── relatorios/       # Scripts de relatório
 │ │ └── registros.php
-│ ├── vendor/
+│ │ └── vendor/         # Dependências do composer
 │ └── composer.json
 │
 ├── db/
-│ └── banco.sql
+│ └── banco.sql         # Script de criação da tabela dados
 │
 ├── nginx/
-│ └── default.conf
+│ └── nginx.conf
 │
-├── Dockerfile
 ├── docker-compose.yml
 └── README.md
 
 ```
-
 
 ---
 
@@ -137,6 +137,25 @@ git clone https://github.com/erichiroshi/toshiro-shibakita-dio
 docker compose up -d --build
 ```
 
+Cria:
+- 1 container do MySQL
+- 1 container do PHPMyAdmin
+- 1 container do app PHP
+- 1 container do Nginx
+
+### Subir múltiplas instâncias do app
+Após o build inicial, é possível escalar o serviço app para múltiplas instâncias:
+```bash
+docker compose up --scale app=3 -d
+```
+Isso criará 3 containers independentes do app:
+
+- app_1
+- app_2
+- app_3
+
+O Nginx faz load balancing entre eles automaticamente.
+
 ### Acessar a aplicação
 - Página principal (gera registros):  
   http://localhost:4500/
@@ -144,7 +163,7 @@ docker compose up -d --build
 - Relatório de registros:  
   http://localhost:4500/relatorios/relatorios.php
 
-- Verificar banco de dados - via phpMyAdmin:  
+- Verificar banco de dados - via PHPMyAdmin:  
   http://localhost:8081/
 
 ### Acessar o banco via CLI
@@ -173,6 +192,12 @@ dados (AlunoID, Nome, Sobrenome, Endereco, Cidade, Host, created_at)
 ```
 
 ### 5.2 Logs
+Todos os logs de inserção de dados são armazenados em:
+
+```
+/var/www/html/app.log
+```
+
 Cada inserção gera um log JSON em:
 
 Exemplo:

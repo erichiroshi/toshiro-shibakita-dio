@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   mysql:
     image: mysql:latest
@@ -27,22 +29,14 @@ services:
 
   app:
     build: ./app
-    container_name: php-app-container-dio
+    #container_name: php-app-container-dio
     depends_on:
       - mysql
-    volumes:
-      - ./app:/var/www/html    # espelha o código
-      - /var/www/html/vendor   # evita sobrescrever vendor localmente
-    networks:
-      - app-network
     environment:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+    networks:
+      - app-network
 
   nginx:
     build: ./nginx

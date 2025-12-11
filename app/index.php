@@ -7,6 +7,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 // Exibe versão do PHP
 echo 'Versao Atual do PHP: ' . phpversion() . '<br>';
+echo "<h3>Instância do APP: <strong>" . getenv("HOSTNAME") . "</strong></h3><hr><br>";
 
 // -----------------------------------------------------------------------------
 // Configurações do Banco
@@ -30,11 +31,11 @@ if (mysqli_connect_errno()) {
 $faker       = Faker\Factory::create('pt_BR'); // dados brasileiros realistas
 
 $alunoID     = $faker->unique()->numberBetween(1, 1000000);
-$nome        = $faker->firstName;
-$sobrenome   = $faker->lastName;
-$endereco    = $faker->streetAddress;
-$cidade      = $faker->city;
-$host_name   = gethostname();
+$nome        = $link->real_escape_string($faker->firstName);
+$sobrenome   = $link->real_escape_string($faker->lastName);
+$endereco    = $link->real_escape_string($faker->streetAddress);
+$cidade      = $link->real_escape_string($faker->city);
+$host_name   = $link->real_escape_string(gethostname());
 
 $query = "INSERT INTO dados (AlunoID, Nome, Sobrenome, Endereco, Cidade, Host)
           VALUES ($alunoID, '$nome', '$sobrenome', '$endereco', '$cidade', '$host_name')";
