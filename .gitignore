@@ -2,7 +2,6 @@
 #  Arquivos PHP / Backend
 # ===========================
 vendor/
-composer.lock
 *.log
 app.log
 
@@ -63,7 +62,6 @@ logs/
 # ===========================
 #  Banco de Dados
 # ===========================
-*.sql
 *.dump
 
 # ===========================
